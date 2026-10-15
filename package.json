@@ -1,0 +1,16 @@
+{
+  "name": "minecraft-afk-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord-managed Minecraft AFK Bot System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mineflayer": "^4.20.1",
+    "socks": "^2.8.1"
+  }
+}
