@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Configuration Portal</title>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background-color: #1e293b;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 420px;
+    }
+    h2 {
+      margin-top: 0;
+      color: #38bdf8;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.3rem;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      background-color: #0f172a;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1.5rem;
+      background-color: #0284c7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #0369a1;
+    }
+    #status {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>⚡ Bot Control Panel</h2>
+    <label for="adminKey">Admin Authorization Passkey</label>
+    <input type="password" id="adminKey" placeholder="Enter WEB_ADMIN_KEY">
+
+    <label for="newToken">New Discord Bot Token</label>
+    <input type="password" id="newToken" placeholder="Paste Discord Token Here">
+
+    <button onclick="updateToken()">Update & Save Token</button>
+    <div id="status"></div>
+  </div>
+
+  <script>
+    async function updateToken() {
+      const adminKey = document.getElementById('adminKey').value;
+      const newToken = document.getElementById('newToken').value;
+      const statusDiv = document.getElementById('status');
+
+      statusDiv.style.color = '#38bdf8';
+      statusDiv.innerText = 'Updating...';
+
+      try {
+        const res = await fetch('/api/update-token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adminKey, newToken })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          statusDiv.style.color = '#4ade80';
+          statusDiv.innerText = data.message;
+        } else {
+          statusDiv.style.color = '#f87171';
+          statusDiv.innerText = data.message;
+        }
+      } catch (err) {
+        statusDiv.style.color = '#f87171';
+        statusDiv.innerText = 'Network error occurred.';
+      }
+    }
+  </script>
+</body>
+</html>
